@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>THE PERFECT HERO</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Oswald:wght@400;700&family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black:   #0a0a0a;
+      --yellow:  #FFD600;
+      --red:     #E01B1B;
+      --white:   #F5F0E8;
+      --gray:    #1c1c1c;
+      --ink:     #111111;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--black);
+      color: var(--white);
+      font-family: 'Noto Sans KR', sans-serif;
+      overflow-x: hidden;
+    }
+
+    /* ── HALFTONE ── */
+    .halftone { position: relative; }
+    .halftone::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(circle, #FFD60022 1px, transparent 1px);
+      background-size: 12px 12px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      background: var(--black);
+      border-bottom: 3px solid var(--yellow);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 2.5rem;
+      height: 64px;
+    }
+    .nav-logo {
+      font-family: 'Bangers', cursive;
+      font-size: 1.6rem;
+      letter-spacing: 3px;
+      color: var(--yellow);
+      text-decoration: none;
+      text-shadow: 2px 2px 0 var(--red);
+    }
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+    .nav-links a {
+      font-family: 'Oswald', sans-serif;
+      font-weight: 700;
+      font-size: 0.95rem;
+      letter-spacing: 2px;
+      color: var(--white);
+      text-decoration: none;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--yellow); }
+
+    /* ── HERO SECTION ── */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 100px 2rem 6rem;
+      background:
+        radial-gradient(ellipse 60% 50% at 50% 55%, #E01B1B1a, transparent),
+        var(--black);
+      position: relative;
+      overflow: hidden;
+    }
+    #hero::after {
+      content: '';
+      position: absolute;
+      bottom: -40px; left: -10%;
+      width: 120%;
+      height: 80px;
+      background: var(--yellow);
+      transform: rotate(-2deg);
+      z-index: 1;
+    }
+
+    /* ── FLOATING SVG ICONS ── */
+    .deco-icons {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1;
+      overflow: hidden;
+    }
+    .deco-icon {
+      position: absolute;
+      opacity: 0.18;
+    }
+    /* individual placements */
+    .deco-icon.star-tl  { top: 12%;  left: 6%;   width: 64px;  transform: rotate(-15deg); }
+    .deco-icon.bolt-tr  { top: 8%;   right: 7%;  width: 48px;  transform: rotate(10deg); }
+    .deco-icon.mask-bl  { bottom: 18%; left: 4%;  width: 72px;  transform: rotate(8deg); }
+    .deco-icon.star-br  { bottom: 14%; right: 5%; width: 56px;  transform: rotate(20deg); }
+    .deco-icon.bolt-ml  { top: 44%;  left: 2%;   width: 38px;  transform: rotate(-5deg); }
+    .deco-icon.star-mr  { top: 38%;  right: 3%;  width: 44px;  transform: rotate(30deg); }
+    /* bigger faded ones behind title */
+    .deco-icon.star-bg-l { top: 20%; left: 18%;  width: 110px; opacity: 0.06; transform: rotate(-8deg); }
+    .deco-icon.bolt-bg-r { top: 15%; right: 16%; width: 90px;  opacity: 0.07; transform: rotate(5deg); }
+    .deco-icon.mask-bg-c { top: 30%; left: 38%;  width: 130px; opacity: 0.05; }
+
+    .hero-eyebrow {
+      font-family: 'Oswald', sans-serif;
+      font-size: 0.85rem;
+      letter-spacing: 6px;
+      color: var(--red);
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+      position: relative;
+      z-index: 2;
+    }
+    .hero-title {
+      font-family: 'Bangers', cursive;
+      font-size: clamp(5rem, 14vw, 13rem);
+      line-height: 0.9;
+      letter-spacing: 4px;
+      color: var(--white);
+      text-shadow:
+        6px 6px 0 var(--yellow),
+        12px 12px 0 var(--red);
+      position: relative;
+      z-index: 2;
+    }
+    .hero-title span { color: var(--yellow); }
+
+    /* inline deco beside title */
+    .title-deco {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1.2rem;
+      margin-top: 0.5rem;
+      position: relative;
+      z-index: 2;
+    }
+    .title-deco svg { width: 28px; height: 28px; opacity: 0.75; }
+
+    .hero-subtitle {
+      margin-top: 1.4rem;
+      font-family: 'Oswald', sans-serif;
+      font-size: 1.1rem;
+      letter-spacing: 3px;
+      color: var(--white);
+      opacity: 0.75;
+      text-transform: uppercase;
+      position: relative;
+      z-index: 2;
+    }
+    .bubble-cta {
+      margin-top: 2.8rem;
+      position: relative;
+      display: inline-block;
+      background: var(--yellow);
+      color: var(--ink);
+      font-family: 'Bangers', cursive;
+      font-size: 1.3rem;
+      letter-spacing: 3px;
+      padding: 0.7rem 2rem;
+      border: 3px solid var(--ink);
+      border-radius: 4px;
+      cursor: pointer;
+      text-decoration: none;
+      box-shadow: 4px 4px 0 var(--ink);
+      transition: transform 0.15s, box-shadow 0.15s;
+      z-index: 2;
+    }
+    .bubble-cta:hover {
+      transform: translate(-2px, -2px);
+      box-shadow: 6px 6px 0 var(--ink);
+    }
+    .bubble-cta::after {
+      content: '';
+      position: absolute;
+      bottom: -14px; left: 2rem;
+      width: 0; height: 0;
+      border-left: 12px solid transparent;
+      border-top: 14px solid var(--ink);
+    }
+    .hero-poster {
+      margin-top: 3.5rem;
+      width: min(340px, 80vw);
+      aspect-ratio: 2/3;
+      background: var(--gray);
+      border: 4px solid var(--ink);
+      box-shadow: 8px 8px 0 var(--yellow);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Oswald', sans-serif;
+      font-size: 0.85rem;
+      letter-spacing: 2px;
+      color: #555;
+      text-transform: uppercase;
+      z-index: 2;
+      position: relative;
+    }
+
+    /* ── SECTION SHARED ── */
+    section { padding: 6rem 2rem; position: relative; }
+    .section-label {
+      font-family: 'Bangers', cursive;
+      font-size: clamp(2.8rem, 6vw, 5rem);
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--yellow);
+      text-shadow: 3px 3px 0 var(--red);
+      margin-bottom: 0.4rem;
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+    }
+    .section-label svg { width: 0.7em; height: 0.7em; flex-shrink: 0; }
+    .section-rule {
+      width: 80px; height: 4px;
+      background: var(--red);
+      margin-bottom: 2.5rem;
+    }
+    .inner { max-width: 1080px; margin: 0 auto; }
+
+    /* ── ABOUT ── */
+    #about {
+      background: var(--yellow);
+      color: var(--ink);
+      clip-path: polygon(0 3%, 100% 0, 100% 97%, 0 100%);
+      padding: 8rem 2rem;
+    }
+    #about .section-label { color: var(--ink); text-shadow: 3px 3px 0 var(--red); }
+    #about .section-rule  { background: var(--ink); }
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: start;
+    }
+    .about-text p {
+      font-size: 1.05rem;
+      line-height: 1.85;
+      color: var(--ink);
+    }
+    .about-info-box {
+      background: var(--ink);
+      color: var(--yellow);
+      border: 3px solid var(--ink);
+      padding: 2rem;
+      font-family: 'Oswald', sans-serif;
+    }
+    .about-info-box h3 {
+      font-family: 'Bangers', cursive;
+      font-size: 1.6rem;
+      letter-spacing: 3px;
+      margin-bottom: 1.2rem;
+      color: var(--yellow);
+    }
+    .info-row {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 0.8rem;
+      border-bottom: 1px solid #333;
+      padding-bottom: 0.8rem;
+      font-size: 0.9rem;
+      letter-spacing: 1px;
+    }
+    .info-row .label { color: var(--red); min-width: 90px; font-weight: 700; }
+    .info-row .value { color: var(--white); }
+
+    /* ── WORKS ── */
+    #works { background: var(--black); position: relative; }
+    .works-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.2rem;
+    }
+    .work-card {
+      background: var(--gray);
+      border: 3px solid #222;
+      aspect-ratio: 16/9;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.6rem;
+      font-family: 'Oswald', sans-serif;
+      font-size: 0.8rem;
+      letter-spacing: 2px;
+      color: #444;
+      text-transform: uppercase;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+    .work-card:hover {
+      border-color: var(--yellow);
+      box-shadow: 4px 4px 0 var(--yellow);
+    }
+    .work-card .card-tag {
+      position: absolute;
+      top: 0; left: 0;
+      background: var(--red);
+      color: var(--white);
+      font-family: 'Oswald', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      padding: 3px 10px;
+      text-transform: uppercase;
+    }
+
+    /* ── MEMBERS ── */
+    #members {
+      background: var(--gray);
+      clip-path: polygon(0 0, 100% 3%, 100% 100%, 0 97%);
+      padding: 9rem 2rem;
+    }
+    .members-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.5rem;
+    }
+    .member-card {
+      background: var(--black);
+      border: 3px solid #2a2a2a;
+      padding: 1.5rem 1.2rem;
+      text-align: center;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .member-card:hover {
+      border-color: var(--yellow);
+      transform: translateY(-4px);
+    }
+    .member-avatar {
+      width: 80px; height: 80px;
+      background: #2a2a2a;
+      border: 3px solid #333;
+      border-radius: 2px;
+      margin: 0 auto 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.65rem;
+      letter-spacing: 1px;
+      color: #444;
+      text-transform: uppercase;
+      font-family: 'Oswald', sans-serif;
+    }
+    .member-name {
+      font-family: 'Bangers', cursive;
+      font-size: 1.3rem;
+      letter-spacing: 2px;
+      color: var(--yellow);
+      margin-bottom: 0.3rem;
+    }
+    .member-role {
+      font-family: 'Oswald', sans-serif;
+      font-size: 0.75rem;
+      letter-spacing: 2px;
+      color: var(--red);
+      text-transform: uppercase;
+      margin-bottom: 0.6rem;
+    }
+    .member-desc { font-size: 0.82rem; line-height: 1.6; color: #888; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--ink);
+      border-top: 4px solid var(--yellow);
+      text-align: center;
+      padding: 2.5rem 1rem;
+    }
+    footer .f-logo {
+      font-family: 'Bangers', cursive;
+      font-size: 1.8rem;
+      letter-spacing: 4px;
+      color: var(--yellow);
+      text-shadow: 2px 2px 0 var(--red);
+    }
+    footer p {
+      margin-top: 0.5rem;
+      font-family: 'Oswald', sans-serif;
+      font-size: 0.78rem;
+      letter-spacing: 2px;
+      color: #555;
+      text-transform: uppercase;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      .about-grid   { grid-template-columns: 1fr; }
+      .works-grid   { grid-template-columns: 1fr 1fr; }
+      .members-grid { grid-template-columns: 1fr 1fr; }
+      .nav-links    { gap: 1rem; }
+    }
+    @media (max-width: 480px) {
+      .works-grid   { grid-template-columns: 1fr; }
+      .members-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a class="nav-logo" href="#hero">TPH</a>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#works">Works</a></li>
+      <li><a href="#members">Members</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero" class="halftone">
+
+    <!-- background floating decorations -->
+    <div class="deco-icons">
+
+      <!-- big faded behind title -->
+      <svg class="deco-icon star-bg-l" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <polygon points="30,2 36,22 58,22 41,35 47,56 30,43 13,56 19,35 2,22 24,22" fill="#FFD600"/>
+      </svg>
+      <svg class="deco-icon bolt-bg-r" viewBox="0 0 50 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <polygon points="32,0 10,44 24,44 18,80 42,32 28,32" fill="#FFD600"/>
+      </svg>
+      <svg class="deco-icon mask-bg-c" viewBox="0 0 100 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M50 10 C20 10 5 25 5 35 C5 48 15 55 25 50 C30 48 35 42 50 42 C65 42 70 48 75 50 C85 55 95 48 95 35 C95 25 80 10 50 10Z" fill="#FFD600"/>
+        <ellipse cx="28" cy="32" rx="10" ry="12" fill="#0a0a0a"/>
+        <ellipse cx="72" cy="32" rx="10" ry="12" fill="#0a0a0a"/>
+      </svg>
+
+      <!-- small accents around edges -->
+      <svg class="deco-icon star-tl" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <polygon points="30,2 36,22 58,22 41,35 47,56 30,43 13,56 19,35 2,22 24,22" fill="#FFD600"/>
+      </svg>
+      <svg class="deco-icon bolt-tr" viewBox="0 0 50 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <polygon points="32,0 10,44 24,44 18,80 42,32 28,32" fill="#FFD600"/>
+      </svg>
+      <svg class="deco-icon mask-bl" viewBox="0 0 100 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M50 10 C20 10 5 25 5 35 C5 48 15 55 25 50 C30 48 35 42 50 42 C65 42 70 48 75 50 C85 55 95 48 95 35 C95 25 80 10 50 10Z" fill="#FFD600"/>
+        <ellipse cx="28" cy="32" rx="10" ry="12" fill="#0a0a0a"/>
+        <ellipse cx="72" cy="32" rx="10" ry="12" fill="#0a0a0a"/>
+      </svg>
+      <svg class="deco-icon star-br" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <polygon points="30,2 36,22 58,22 41,35 47,56 30,43 13,56 19,35 2,22 24,22" fill="#E01B1B"/>
+      </svg>
+      <svg class="deco-icon bolt-ml" viewBox="0 0 50 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <polygon points="32,0 10,44 24,44 18,80 42,32 28,32" fill="#E01B1B"/>
+      </svg>
+      <svg class="deco-icon star-mr" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <polygon points="30,2 36,22 58,22 41,35 47,56 30,43 13,56 19,35 2,22 24,22" fill="#FFD600"/>
+      </svg>
+    </div>
+
+    <p class="hero-eyebrow">졸업작품 단편 애니메이션 · 2025</p>
+    <h1 class="hero-title">THE<br><span>PERFECT</span><br>HERO</h1>
+
+    <!-- inline icon row under title -->
+    <div class="title-deco">
+      <svg viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <polygon points="30,2 36,22 58,22 41,35 47,56 30,43 13,56 19,35 2,22 24,22" fill="#FFD600"/>
+      </svg>
+      <svg viewBox="0 0 50 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <polygon points="32,0 10,44 24,44 18,80 42,32 28,32" fill="#FFD600"/>
+      </svg>
+      <svg viewBox="0 0 100 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M50 10 C20 10 5 25 5 35 C5 48 15 55 25 50 C30 48 35 42 50 42 C65 42 70 48 75 50 C85 55 95 48 95 35 C95 25 80 10 50 10Z" fill="#F5F0E8"/>
+        <ellipse cx="28" cy="32" rx="10" ry="12" fill="#0a0a0a"/>
+        <ellipse cx="72" cy="32" rx="10" ry="12" fill="#0a0a0a"/>
+      </svg>
+      <svg viewBox="0 0 50 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <polygon points="32,0 10,44 24,44 18,80 42,32 28,32" fill="#FFD600"/>
+      </svg>
+      <svg viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <polygon points="30,2 36,22 58,22 41,35 47,56 30,43 13,56 19,35 2,22 24,22" fill="#FFD600"/>
+      </svg>
+    </div>
+
+    <p class="hero-subtitle">누구나 히어로를 꿈꾼다 — 하지만 히어로가 된다는 건?</p>
+    <a class="bubble-cta" href="#about">STORY 보기</a>
+    <div class="hero-poster">[ 포스터 이미지 ]</div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="inner">
+      <p class="section-label">
+        <svg viewBox="0 0 100 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M50 10 C20 10 5 25 5 35 C5 48 15 55 25 50 C30 48 35 42 50 42 C65 42 70 48 75 50 C85 55 95 48 95 35 C95 25 80 10 50 10Z" fill="#111111"/>
+          <ellipse cx="28" cy="32" rx="10" ry="12" fill="#111111" stroke="#111" stroke-width="2"/>
+          <ellipse cx="72" cy="32" rx="10" ry="12" fill="#111111" stroke="#111" stroke-width="2"/>
+        </svg>
+        About
+      </p>
+      <div class="section-rule"></div>
+      <div class="about-grid">
+        <div class="about-text">
+          <p>
+            괴수가 출몰하는 도시, 그 혼란 속에서 홀로 빛나는 히어로가 있다.
+            주인공은 그를 동경하며 히어로의 자리를 꿈꾼다.<br><br>
+            어느 날, 우연히 목격한 히어로의 어두운 면.
+            주인공은 그 비밀을 이용해 히어로를 몰락시키고
+            스스로를 새로운 히어로라 선언한다.<br><br>
+            하지만 "완벽한 히어로"가 되는 길은
+            생각보다 훨씬 험난하고 복잡한데…
+          </p>
+        </div>
+        <div class="about-info-box">
+          <h3>WORK INFO</h3>
+          <div class="info-row"><span class="label">제목</span><span class="value">The Perfect Hero</span></div>
+          <div class="info-row"><span class="label">장르</span><span class="value">액션 / 슈퍼히어로</span></div>
+          <div class="info-row"><span class="label">스타일</span><span class="value">Stylized 3D Animation</span></div>
+          <div class="info-row"><span class="label">러닝타임</span><span class="value">미정</span></div>
+          <div class="info-row"><span class="label">제작연도</span><span class="value">2025</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WORKS -->
+  <section id="works" class="halftone">
+    <div class="inner">
+      <p class="section-label">
+        <svg viewBox="0 0 50 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <polygon points="32,0 10,44 24,44 18,80 42,32 28,32" fill="#FFD600"/>
+        </svg>
+        Works
+      </p>
+      <div class="section-rule"></div>
+      <div class="works-grid">
+        <div class="work-card">
+          <span class="card-tag">Trailer</span>
+          [ 예고편 영상 ]
+        </div>
+        <div class="work-card">
+          <span class="card-tag">Artwork</span>
+          [ 컨셉아트 1 ]
+        </div>
+        <div class="work-card">
+          <span class="card-tag">Artwork</span>
+          [ 컨셉아트 2 ]
+        </div>
+        <div class="work-card">
+          <span class="card-tag">3D Model</span>
+          [ 캐릭터 모델 ]
+        </div>
+        <div class="work-card">
+          <span class="card-tag">BG</span>
+          [ 배경 작업물 ]
+        </div>
+        <div class="work-card">
+          <span class="card-tag">Storyboard</span>
+          [ 스토리보드 ]
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MEMBERS -->
+  <section id="members">
+    <div class="inner">
+      <p class="section-label">
+        <svg viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <polygon points="30,2 36,22 58,22 41,35 47,56 30,43 13,56 19,35 2,22 24,22" fill="#FFD600"/>
+        </svg>
+        Members
+      </p>
+      <div class="section-rule"></div>
+      <div class="members-grid">
+        <div class="member-card">
+          <div class="member-avatar">Photo</div>
+          <p class="member-name">이름</p>
+          <p class="member-role">Director</p>
+          <p class="member-desc">담당 역할 및<br>간단한 소개</p>
+        </div>
+        <div class="member-card">
+          <div class="member-avatar">Photo</div>
+          <p class="member-name">이름</p>
+          <p class="member-role">3D Artist</p>
+          <p class="member-desc">담당 역할 및<br>간단한 소개</p>
+        </div>
+        <div class="member-card">
+          <div class="member-avatar">Photo</div>
+          <p class="member-name">이름</p>
+          <p class="member-role">Animator</p>
+          <p class="member-desc">담당 역할 및<br>간단한 소개</p>
+        </div>
+        <div class="member-card">
+          <div class="member-avatar">Photo</div>
+          <p class="member-name">이름</p>
+          <p class="member-role">Concept Art</p>
+          <p class="member-desc">담당 역할 및<br>간단한 소개</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p class="f-logo">THE PERFECT HERO</p>
+    <p>© 2025 Graduation Animation Project — All Rights Reserved</p>
+  </footer>
+
+</body>
+</html>
